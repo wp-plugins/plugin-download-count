@@ -38,6 +38,16 @@
 		                    
 		                    <div class="option">
 		                    	<p>
+		                    		<strong><?php _e('Themes', $this->plugin->name); ?></strong>
+		                    		<textarea name="<?php echo $this->plugin->name; ?>[themes]"><?php echo (isset($this->settings['themes']) ? $this->settings['themes'] : ''); ?></textarea>
+		                    	</p>
+		                    	<p class="description">
+		                    		<?php _e('Enter the programmatic name of each theme, one per line. For example, spun. Each Theme listed here will form the download count total.', $this->plugin->name); ?>
+		                    	</p>
+		                    </div>
+		                    
+		                    <div class="option">
+		                    	<p>
 		                    		<strong><?php _e('Update Interval', $this->plugin->name); ?></strong>
 		                    		<input type="number" name="<?php echo $this->plugin->name; ?>[interval]" value="<?php echo (isset($this->settings['interval']) ? $this->settings['interval'] : '30'); ?>" min="15" max="9999" step="1" />
 		                    	</p>
@@ -63,8 +73,6 @@
 		                    	</p>
 		                    </div>
 		                </div>
-		                
-		               
 					</div>
 					<!-- /normal-sortables -->
 			    </form>

@@ -2,10 +2,10 @@
 /**
 * Plugin Name: Plugin Download Count
 * Plugin URI: http://www.wpcube.co.uk/plugins/plugin-download-count
-* Version: 1.0
+* Version: 1.0.1
 * Author: WP Cube
 * Author URI: http://www.wpcube.co.uk
-* Description: Gets the total download count for one or more defined WordPress Themes and/or Plugins
+* Description: Displays the total download count for one or more defined WordPress Plugins and/or Themes hosted on wordpress.org
 * License: GPL2
 */
 
@@ -26,12 +26,12 @@
 */
 
 /**
-* DownloadCount Class
+* PluginDownloadCount Class
 * 
 * @package WP Cube
 * @subpackage Download Count
 * @author Tim Carr
-* @version 1.0
+* @version 1.0.1
 * @copyright WP Cube
 */
 class PluginDownloadCount {
@@ -43,7 +43,7 @@ class PluginDownloadCount {
         $this->plugin = new stdClass;
         $this->plugin->name = 'plugin-download-count'; // Plugin Folder
         $this->plugin->displayName = 'Download Count'; // Plugin Name
-        $this->plugin->version = 1.0;
+        $this->plugin->version = '1.0.1';
         $this->plugin->folder = WP_PLUGIN_DIR.'/'.$this->plugin->name; // Full Path to Plugin Folder
         $this->plugin->url = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
         
@@ -93,6 +93,10 @@ class PluginDownloadCount {
         if (isset($_POST['submit'])) {
         	if (isset($_POST[$this->plugin->name])) {
         		update_option($this->plugin->name, $_POST[$this->plugin->name]);
+        		
+        		// Get download count - this will store it in transient, so frontend site loads quickly
+        		$this->getDownloadCount(true);
+        		
 				$this->message = __('Settings Updated.', $this->plugin->name);
 			}
         }
@@ -186,11 +190,19 @@ class PluginDownloadCount {
 		$downloadCount = 0;
 		
 		// If no plugins/themes defined, return 0
-		if (!isset($this->settings) OR !(isset($this->settings['plugins']))) return 0;
-		$plugins = explode("\n", rtrim($this->settings['plugins'], "\n"));
-		if (!is_array($plugins) OR count($plugins) == 0) return 0;
+		if (!isset($this->settings)) return 0;
+		if (!isset($this->settings['plugins']) AND !isset($this->settings['themes'])) return 0;
 		
+		$plugins = explode("\n", trim(rtrim($this->settings['plugins'], "\n")));
+		$themes = explode("\n", trim(rtrim($this->settings['themes'], "\n")));
+		if (!is_array($plugins) AND !is_array($themes)) return 0;
+		if (count($plugins) == 0 AND count($themes) == 0) return 0;
+		
+		// Get plugin download count
 		foreach ($plugins as $plugin) {
+			// Skip blank entries - happens when a plugin is added to settings then removed
+			if (empty($plugin)) continue;
+			
 			$response = wp_remote_post('http://api.wordpress.org/plugins/info/1.0/', array(
 				'body' => array(
 					'action' => 'plugin_information',
@@ -200,8 +212,28 @@ class PluginDownloadCount {
 			));
 			
 			$pluginInfo = unserialize($response['body']);
+			if (isset($pluginInfo->downloaded)) {
+				$downloadCount += $pluginInfo->downloaded;
+			}
+		}
+		
+		// Get theme download count
+		foreach ($themes as $theme) {
+			// Skip blank entries - happens when a theme is added to settings then removed
+			if (empty($theme)) continue;
 			
-			$downloadCount += $pluginInfo->downloaded;
+			$response = wp_remote_post('http://api.wordpress.org/themes/info/1.0/', array(
+				'body' => array(
+					'action' => 'theme_information',
+					'timeout' => 15,
+					'request' => serialize((object) array( 'slug' => $theme )),
+				) ,
+			));
+			
+			$themeInfo = unserialize($response['body']);
+			if (isset($themeInfo->downloaded)) {
+				$downloadCount += $themeInfo->downloaded;
+			}
 		}
 		
 		// Store in transient + return
