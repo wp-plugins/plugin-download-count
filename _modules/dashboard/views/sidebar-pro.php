@@ -25,7 +25,7 @@
     <div class="option">
     	<p>
     		<a href="<?php echo (isset($this->plugin->documentationURL) ? $this->plugin->documentationURL : '#'); ?>" target="_blank" class="button"><?php _e('Documentation', $this->plugin->name); ?></a>
-    		<a href="mailto:support@wpcube.co.uk?subject=<?php echo $this->plugin->displayName.' 1.0'; ?>" target="_blank" class="button"><?php _e('Support', $this->plugin->name); ?></a>
+    		<a href="mailto:support@wpcube.co.uk?subject=<?php echo $this->plugin->displayName.' '.$this->plugin->version; ?>" target="_blank" class="button"><?php _e('Support', $this->plugin->name); ?></a>
     	</p>
     </div>
 </div>

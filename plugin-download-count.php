@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Plugin Download Count
 * Plugin URI: http://www.wpcube.co.uk/plugins/plugin-download-count
-* Version: 1.0.1
+* Version: 1.0.2
 * Author: WP Cube
 * Author URI: http://www.wpcube.co.uk
 * Description: Displays the total download count for one or more defined WordPress Plugins and/or Themes hosted on wordpress.org
@@ -31,7 +31,7 @@
 * @package WP Cube
 * @subpackage Download Count
 * @author Tim Carr
-* @version 1.0.1
+* @version 1.0.2
 * @copyright WP Cube
 */
 class PluginDownloadCount {
@@ -43,7 +43,7 @@ class PluginDownloadCount {
         $this->plugin = new stdClass;
         $this->plugin->name = 'plugin-download-count'; // Plugin Folder
         $this->plugin->displayName = 'Download Count'; // Plugin Name
-        $this->plugin->version = '1.0.1';
+        $this->plugin->version = '1.0.2';
         $this->plugin->folder = WP_PLUGIN_DIR.'/'.$this->plugin->name; // Full Path to Plugin Folder
         $this->plugin->url = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
         
@@ -57,6 +57,7 @@ class PluginDownloadCount {
         add_action('admin_enqueue_scripts', array(&$this, 'adminScriptsAndCSS'));
         add_action('admin_menu', array(&$this, 'adminPanelsAndMetaBoxes'));
         add_action('init', array(&$this, 'setupTinyMCEPlugins'));
+        add_action('plugins_loaded', array(&$this, 'loadLanguageFiles'));
         
         // Frontend
         add_action('wp_enqueue_scripts', array(&$this, 'frontendScriptsAndCSS'));
@@ -107,6 +108,13 @@ class PluginDownloadCount {
 		// Load Settings Form
         include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/views/settings.php');  
     }
+    
+    /**
+	* Loads plugin textdomain
+	*/
+	function loadLanguageFiles() {
+		load_plugin_textdomain($this->plugin->name, false, $this->plugin->name.'/languages/');
+	}
     
     /**
     * Setup calls to add a button and plugin to the TinyMCE Rich Text Editors, except on the plugin's
