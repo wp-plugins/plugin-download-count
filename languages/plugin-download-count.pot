@@ -3,8 +3,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Plugin Download Count 1.0.2\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin-download-count\n"
-"POT-Creation-Date: 2014-03-01 18:33:48+00:00\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/plugin-download-"
+"count\n"
+"POT-Creation-Date: 2014-03-18 20:37:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,7 +14,9 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
 #: _modules/dashboard/views/dashboard-nodata.php:14
-msgid "Thanks for using our plugins - why not check out some of our other amazing Premium WordPress Plugins?"
+msgid ""
+"Thanks for using our plugins - why not check out some of our other amazing "
+"Premium WordPress Plugins?"
 msgstr ""
 
 #: _modules/dashboard/views/dashboard-nodata.php:15
@@ -22,7 +25,9 @@ msgid "Visit WP Cube"
 msgstr ""
 
 #: _modules/dashboard/views/dashboard.php:18
-msgid "Thanks for using our plugins - why not check out some of our other amazing Premium WordPress Plugins below?"
+msgid ""
+"Thanks for using our plugins - why not check out some of our other amazing "
+"Premium WordPress Plugins below?"
 msgstr ""
 
 #: _modules/dashboard/views/dashboard.php:33
@@ -65,7 +70,9 @@ msgid "Updates"
 msgstr ""
 
 #: _modules/dashboard/views/footer-upgrade.php:18
-msgid "Receive one click update notifications, right within your WordPress Adminstration panel"
+msgid ""
+"Receive one click update notifications, right within your WordPress "
+"Adminstration panel"
 msgstr ""
 
 #: _modules/dashboard/views/footer-upgrade.php:19
@@ -86,7 +93,9 @@ msgid "About"
 msgstr ""
 
 #: _modules/dashboard/views/sidebar-donate.php:13
-msgid "Found this plugin useful? Donations to help with support and development are appreciated."
+msgid ""
+"Found this plugin useful? Donations to help with support and development are "
+"appreciated."
 msgstr ""
 
 #: _modules/dashboard/views/sidebar-donate.php:30
@@ -100,7 +109,8 @@ msgstr ""
 
 #: _modules/dashboard/views/sidebar-donate.php:43
 #: _modules/dashboard/views/sidebar-upgrade.php:13
-msgid "Subscribe to the newsletter and receive updates on our WordPress Plugins"
+msgid ""
+"Subscribe to the newsletter and receive updates on our WordPress Plugins"
 msgstr ""
 
 #: _modules/dashboard/views/sidebar-donate.php:49
@@ -134,7 +144,10 @@ msgid "Plugins"
 msgstr ""
 
 #: views/settings.php:35
-msgid "Enter the programmatic name of each plugin, one per line. For example, this plugin's programmatic name is plugin-download-count. Each Plugin listed here will form the download count total."
+msgid ""
+"Enter the programmatic name of each plugin, one per line. For example, this "
+"plugin's programmatic name is plugin-download-count. Each Plugin listed here "
+"will form the download count total."
 msgstr ""
 
 #: views/settings.php:41
@@ -142,7 +155,9 @@ msgid "Themes"
 msgstr ""
 
 #: views/settings.php:45
-msgid "Enter the programmatic name of each theme, one per line. For example, spun. Each Theme listed here will form the download count total."
+msgid ""
+"Enter the programmatic name of each theme, one per line. For example, spun. "
+"Each Theme listed here will form the download count total."
 msgstr ""
 
 #: views/settings.php:51
@@ -150,7 +165,10 @@ msgid "Update Interval"
 msgstr ""
 
 #: views/settings.php:55
-msgid "When a visitor views the download count, it's updated via AJAX periodically by querying the wordpress.org API. Define the number of seconds to check for a new download count."
+msgid ""
+"When a visitor views the download count, it's updated via AJAX periodically "
+"by querying the wordpress.org API. Define the number of seconds to check for "
+"a new download count."
 msgstr ""
 
 #: views/settings.php:61
@@ -162,8 +180,11 @@ msgid "Output"
 msgstr ""
 
 #: views/settings.php:72
-msgid "Use the shortcode [PDC] to display the download count on your Page, Post or Custom Post Type"
+msgid ""
+"Use the shortcode [PDC] to display the download count on your Page, Post or "
+"Custom Post Type"
 msgstr ""
+
 #. Plugin Name of the plugin/theme
 msgid "Plugin Download Count"
 msgstr ""
@@ -173,7 +194,9 @@ msgid "http://www.wpcube.co.uk/plugins/plugin-download-count"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Displays the total download count for one or more defined WordPress Plugins and/or Themes hosted on wordpress.org"
+msgid ""
+"Displays the total download count for one or more defined WordPress Plugins "
+"and/or Themes hosted on wordpress.org"
 msgstr ""
 
 #. Author of the plugin/theme
