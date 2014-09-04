@@ -1,9 +1,9 @@
 === Plugin and Theme Download Count ===
 Contributors: n7studios,wpcube
 Donate link: http://www.wpcube.co.uk/plugins/plugin-download-count
-Tags: download,count,theme,plugin
+Tags: download,count,theme,plugin,downloads,counter
 Requires at least: 3.6
-Tested up to: 3.9
+Tested up to: 4.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ Find out more about us:
 2. Example output via shortcode
 
 == Changelog ==
+
+= 1.0.4 =
+* Fix: Dashboard errors
+* Fix: Changed Menu Icon
+* Fix: WordPress 4.0 compatibility
+* Fix: Enable / Disable CSS
 
 = 1.0.3 =
 * Added CSS to counter

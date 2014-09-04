@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Plugin Download Count
 * Plugin URI: http://www.wpcube.co.uk/plugins/plugin-download-count
-* Version: 1.0.3
+* Version: 1.0.4
 * Author: WP Cube
 * Author URI: http://www.wpcube.co.uk
 * Description: Displays the total download count for one or more defined WordPress Plugins and/or Themes hosted on wordpress.org
@@ -31,7 +31,7 @@
 * @package WP Cube
 * @subpackage Download Count
 * @author Tim Carr
-* @version 1.0.3
+* @version 1.0.4
 * @copyright WP Cube
 */
 class PluginDownloadCount {
@@ -43,7 +43,7 @@ class PluginDownloadCount {
         $this->plugin = new stdClass;
         $this->plugin->name = 'plugin-download-count'; // Plugin Folder
         $this->plugin->displayName = 'Download Count'; // Plugin Name
-        $this->plugin->version = '1.0.3';
+        $this->plugin->version = '1.0.4';
         $this->plugin->folder = WP_PLUGIN_DIR.'/'.$this->plugin->name; // Full Path to Plugin Folder
         $this->plugin->url = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
         
@@ -54,7 +54,6 @@ class PluginDownloadCount {
 		$dashboard = new WPCubeDashboardWidget($this->plugin); 
 		
 		// Hooks
-        add_action('admin_enqueue_scripts', array(&$this, 'adminScriptsAndCSS'));
         add_action('admin_menu', array(&$this, 'adminPanelsAndMetaBoxes'));
         add_action('init', array(&$this, 'setupTinyMCEPlugins'));
         add_action('plugins_loaded', array(&$this, 'loadLanguageFiles'));
@@ -71,18 +70,10 @@ class PluginDownloadCount {
     }
     
     /**
-    * Register and enqueue any JS and CSS for the WordPress Administration
-    */
-    function adminScriptsAndCSS() {
-    	// CSS
-        wp_enqueue_style($this->plugin->name.'-admin', $this->plugin->url.'css/admin.css', array(), $this->plugin->version); 
-    }
-    
-    /**
     * Register the plugin settings panel
     */
     function adminPanelsAndMetaBoxes() {
-        add_menu_page($this->plugin->displayName, $this->plugin->displayName, 'manage_options', $this->plugin->name, array(&$this, 'adminPanel'), $this->plugin->url.'images/icons/small.png');
+        add_menu_page($this->plugin->displayName, $this->plugin->displayName, 'manage_options', $this->plugin->name, array(&$this, 'adminPanel'), 'dashicons-marker');
     }
     
 	/**
@@ -160,7 +151,9 @@ class PluginDownloadCount {
         ));
         
         // CSS
-        wp_enqueue_style($this->plugin->name.'-frontend', $this->plugin->url.'css/frontend.css'); 
+        if (isset($this->settings['enableCSS']) AND $this->settings['enableCSS'] == 1) {
+        	wp_enqueue_style($this->plugin->name.'-frontend', $this->plugin->url.'css/frontend.css');
+        } 
 	}
 	
 	/**
