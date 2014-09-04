@@ -2,14 +2,14 @@
 /**
 * Plugin Name: Plugin Download Count
 * Plugin URI: http://www.wpcube.co.uk/plugins/plugin-download-count
-* Version: 1.0.2
+* Version: 1.0.4
 * Author: WP Cube
 * Author URI: http://www.wpcube.co.uk
 * Description: Displays the total download count for one or more defined WordPress Plugins and/or Themes hosted on wordpress.org
 * License: GPL2
 */
 
-/*  Copyright 2013 WP Cube (email : support@wpcube.co.uk)
+/*  Copyright 2014 WP Cube (email : support@wpcube.co.uk)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -31,7 +31,7 @@
 * @package WP Cube
 * @subpackage Download Count
 * @author Tim Carr
-* @version 1.0.2
+* @version 1.0.4
 * @copyright WP Cube
 */
 class PluginDownloadCount {
@@ -43,7 +43,7 @@ class PluginDownloadCount {
         $this->plugin = new stdClass;
         $this->plugin->name = 'plugin-download-count'; // Plugin Folder
         $this->plugin->displayName = 'Download Count'; // Plugin Name
-        $this->plugin->version = '1.0.2';
+        $this->plugin->version = '1.0.4';
         $this->plugin->folder = WP_PLUGIN_DIR.'/'.$this->plugin->name; // Full Path to Plugin Folder
         $this->plugin->url = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
         
@@ -54,7 +54,6 @@ class PluginDownloadCount {
 		$dashboard = new WPCubeDashboardWidget($this->plugin); 
 		
 		// Hooks
-        add_action('admin_enqueue_scripts', array(&$this, 'adminScriptsAndCSS'));
         add_action('admin_menu', array(&$this, 'adminPanelsAndMetaBoxes'));
         add_action('init', array(&$this, 'setupTinyMCEPlugins'));
         add_action('plugins_loaded', array(&$this, 'loadLanguageFiles'));
@@ -71,18 +70,10 @@ class PluginDownloadCount {
     }
     
     /**
-    * Register and enqueue any JS and CSS for the WordPress Administration
-    */
-    function adminScriptsAndCSS() {
-    	// CSS
-        wp_enqueue_style($this->plugin->name.'-admin', $this->plugin->url.'css/admin.css', array(), $this->plugin->version); 
-    }
-    
-    /**
     * Register the plugin settings panel
     */
     function adminPanelsAndMetaBoxes() {
-        add_menu_page($this->plugin->displayName, $this->plugin->displayName, 'manage_options', $this->plugin->name, array(&$this, 'adminPanel'), $this->plugin->url.'images/icons/small.png');
+        add_menu_page($this->plugin->displayName, $this->plugin->displayName, 'manage_options', $this->plugin->name, array(&$this, 'adminPanel'), 'dashicons-marker');
     }
     
 	/**
@@ -158,6 +149,11 @@ class PluginDownloadCount {
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'interval' => ((isset($this->settings['interval']) AND is_numeric($this->settings['interval'])) ? ($this->settings['interval'] * 1000) : 15000),
         ));
+        
+        // CSS
+        if (isset($this->settings['enableCSS']) AND $this->settings['enableCSS'] == 1) {
+        	wp_enqueue_style($this->plugin->name.'-frontend', $this->plugin->url.'css/frontend.css');
+        } 
 	}
 	
 	/**
@@ -201,46 +197,49 @@ class PluginDownloadCount {
 		if (!isset($this->settings)) return 0;
 		if (!isset($this->settings['plugins']) AND !isset($this->settings['themes'])) return 0;
 		
-		$plugins = explode("\n", trim(rtrim($this->settings['plugins'], "\n")));
-		$themes = explode("\n", trim(rtrim($this->settings['themes'], "\n")));
+		$plugins = (isset($this->settings['plugins']) ? explode("\n", trim(rtrim($this->settings['plugins'], "\n"))) : '');
+		$themes = (isset($this->settings['themes']) ? explode("\n", trim(rtrim($this->settings['themes'], "\n"))) : '');
 		if (!is_array($plugins) AND !is_array($themes)) return 0;
-		if (count($plugins) == 0 AND count($themes) == 0) return 0;
 		
 		// Get plugin download count
-		foreach ($plugins as $plugin) {
-			// Skip blank entries - happens when a plugin is added to settings then removed
-			if (empty($plugin)) continue;
-			
-			$response = wp_remote_post('http://api.wordpress.org/plugins/info/1.0/', array(
-				'body' => array(
-					'action' => 'plugin_information',
-					'timeout' => 15,
-					'request' => serialize((object) array( 'slug' => $plugin )),
-				) ,
-			));
-			
-			$pluginInfo = unserialize($response['body']);
-			if (isset($pluginInfo->downloaded)) {
-				$downloadCount += $pluginInfo->downloaded;
+		if (is_array($plugins)) {
+			foreach ($plugins as $plugin) {
+				// Skip blank entries - happens when a plugin is added to settings then removed
+				if (empty($plugin)) continue;
+				
+				$response = wp_remote_post('http://api.wordpress.org/plugins/info/1.0/', array(
+					'body' => array(
+						'action' => 'plugin_information',
+						'timeout' => 15,
+						'request' => serialize((object) array( 'slug' => $plugin )),
+					) ,
+				));
+				
+				$pluginInfo = unserialize($response['body']);
+				if (isset($pluginInfo->downloaded)) {
+					$downloadCount += $pluginInfo->downloaded;
+				}
 			}
 		}
 		
 		// Get theme download count
-		foreach ($themes as $theme) {
-			// Skip blank entries - happens when a theme is added to settings then removed
-			if (empty($theme)) continue;
-			
-			$response = wp_remote_post('http://api.wordpress.org/themes/info/1.0/', array(
-				'body' => array(
-					'action' => 'theme_information',
-					'timeout' => 15,
-					'request' => serialize((object) array( 'slug' => $theme )),
-				) ,
-			));
-			
-			$themeInfo = unserialize($response['body']);
-			if (isset($themeInfo->downloaded)) {
-				$downloadCount += $themeInfo->downloaded;
+		if (is_array($themes)) {
+			foreach ($themes as $theme) {
+				// Skip blank entries - happens when a theme is added to settings then removed
+				if (empty($theme)) continue;
+				
+				$response = wp_remote_post('http://api.wordpress.org/themes/info/1.0/', array(
+					'body' => array(
+						'action' => 'theme_information',
+						'timeout' => 15,
+						'request' => serialize((object) array( 'slug' => $theme )),
+					) ,
+				));
+				
+				$themeInfo = unserialize($response['body']);
+				if (isset($themeInfo->downloaded)) {
+					$downloadCount += $themeInfo->downloaded;
+				}
 			}
 		}
 		
