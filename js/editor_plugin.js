@@ -1,32 +1,17 @@
 (function() {
-	tinymce.create('tinymce.plugins.PDC', {
-		// Plugin initialisation
-		init: function(ed, url) {
-			// Add command to be fired by button
-			ed.addCommand('tinyPDC', function() {
-				tinymce.execCommand('mceReplaceContent', false, '[PDC]');
-			});
+	tinymce.PluginManager.add('pdc', function(editor,url) {
+		// Add Command
+		editor.addCommand('tinyPDC', function() {
+			console.log('CMD');
+		}); 
 			
-			// Add button, hooking to command above
-			ed.addButton('pdc', {
-				title: 'wordpress.org Plugin Download Count Shortcode', 
-				cmd: 'tinyPDC',
-				image: url + '/../images/icons/small.png'
-			});
-		},
-		
-		// Plugin info
-		getInfo: function() {
-			return {
-				longname: 'wordpress.org Plugin Download Count Shortcode',
-				author: 'WP Cube',
-				authorurl: 'http://www.wpcube.co.uk',
-				infourl: 'http://www.wpcube.co.uk/plugins/plugin-download-count',
-				version: '1.0'
-			};
-		}
+		// Add Button to Visual Editor Toolbar
+		editor.addButton('pdc', {
+			title: 'wordpress.org Plugin and Theme Download Count Shortcode',
+			icon: 'icon dashicons-marker',
+			onclick: function() {
+				editor.insertContent('[PDC]');	
+			}
+		});
 	});
-	
-	// Add plugin created above
-	tinymce.PluginManager.add('pdc', tinymce.plugins.PDC);
 })();

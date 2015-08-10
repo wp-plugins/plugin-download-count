@@ -58,6 +58,20 @@
 		                    
 		                    <div class="option">
 		                    	<p>
+		                    		<strong><?php _e('Enable CSS', $this->plugin->name); ?></strong>
+		                    		<select name="<?php echo $this->plugin->name; ?>[enableCSS]" size="1">
+		                    			<option value="1"<?php echo ((isset($this->settings['enableCSS']) AND $this->settings['enableCSS'] == '1') ? ' selected' : ''); ?>><?php _e('Yes', $this->plugin->name); ?></option>
+		                    			<option value=""<?php echo ((!isset($this->settings['enableCSS']) OR $this->settings['enableCSS'] == '') ? ' selected' : ''); ?>><?php _e('No', $this->plugin->name); ?></option>
+		                    		</select>
+		                    	</p>
+		                    	<p class="description">
+		                    		<?php _e('Select Yes if you want to use this plugin\'s CSS styles for the download count. Select No if you will provide CSS in your Theme.', $this->plugin->name); ?>
+		                    	</p>
+		                    </div>
+		                    
+		                    <div class="option">
+		                    	<p>
+		                    		<?php wp_nonce_field( $this->plugin->name, $this->plugin->name . '_nonce' ); ?>
 		                       		<input type="submit" name="submit" value="<?php _e('Save', $this->plugin->name); ?>" class="button button-primary" /> 
 		                 		</p>
 		                    </div>
