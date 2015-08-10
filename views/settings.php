@@ -71,6 +71,7 @@
 		                    
 		                    <div class="option">
 		                    	<p>
+		                    		<?php wp_nonce_field( $this->plugin->name, $this->plugin->name . '_nonce' ); ?>
 		                       		<input type="submit" name="submit" value="<?php _e('Save', $this->plugin->name); ?>" class="button button-primary" /> 
 		                 		</p>
 		                    </div>
